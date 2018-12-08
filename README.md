@@ -1,7 +1,7 @@
 module_sshuttle
 ==============
 
-FruityWiFi sshuttle module
+BlackBlulb sshuttle module
 
 v1.0
 ---------------------------------
