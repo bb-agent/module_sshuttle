@@ -50,7 +50,7 @@ if($service == "station" and $mac != "") {
 	} else {
 		$exec = "iptables -t nat -D PREROUTING -p tcp -m mac --mac-source $mac -j MARK --set-mark $mod_captive_mark";
 	}
-	exec_fruitywifi($exec);
+	exec_blackbulb($exec);
 	
 	header("Location: ../index.php?tab=1");
 	exit;
@@ -64,15 +64,15 @@ if($service == "sshuttle") {
         // COPY LOG
         if ( 0 < filesize( $mod_logs ) ) {
             $exec = "cp $mod_logs $mod_logs_history/".gmdate("Ymd-H-i-s").".log";
-			exec_fruitywifi($exec);
+			exec_blackbulb($exec);
             
             $exec = "echo '' > $mod_logs";
-			exec_fruitywifi($exec);
+			exec_blackbulb($exec);
         }
         
 		$exec = "$bin_sshuttle -r $mod_sshuttle_user@$mod_sshuttle_server:$mod_sshuttle_port 0/0 -l 0.0.0.0:8888 --dns  -e 'ssh -i ./id_rsa' -x $io_in_ip -D > /dev/null &";
 		#$exec = "$bin_sshuttle -r $mod_sshuttle_user@$mod_sshuttle_server:$mod_sshuttle_port 10.0.0.1/24 -l 10.0.0.1:8888 --dns  -e 'ssh -i ./id_rsa' -x $io_in_ip -D > /dev/null &";
-		exec_fruitywifi($exec);
+		exec_blackbulb($exec);
         
     } else if($action == "stop") {
         // STOP MODULE
@@ -81,25 +81,25 @@ if($service == "sshuttle") {
 		exec($exec,$output);
 		
 		$exec = "kill " . $output[0];
-		exec_fruitywifi($exec);
+		exec_blackbulb($exec);
 		
 		$exec = "iptables -t nat -F sshuttle-8888";
-		exec_fruitywifi($exec);
+		exec_blackbulb($exec);
 		
 		$exec = "iptables -t nat -X sshuttle-8888";
-		exec_fruitywifi($exec);
+		exec_blackbulb($exec);
 		
         // CLEAN USERS FILE
         $exec = "echo '-' > $file_users";
-		exec_fruitywifi($exec);
+		exec_blackbulb($exec);
         
         // COPY LOG
         if ( 0 < filesize( $mod_logs ) ) {
             $exec = "cp $mod_logs $mod_logs_history/".gmdate("Ymd-H-i-s").".log";
-			exec_fruitywifi($exec);
+			exec_blackbulb($exec);
             
             $exec = "echo '' > $mod_logs";
-			exec_fruitywifi($exec);
+			exec_blackbulb($exec);
         }
 
     }
@@ -108,13 +108,13 @@ if($service == "sshuttle") {
 
 if ($ssh_cert == "gen_certificate") {
     $exec = "$bin_rm id_rsa";
-    exec_fruitywifi($exec);
+    exec_blackbulb($exec);
     
     $exec = "$bin_rm id_rsa.pub";
-    exec_fruitywifi($exec);
+    exec_blackbulb($exec);
     
-    $exec = "$bin_ssh_keygen -t rsa -f id_rsa -C @FruityWifi";
-    exec_fruitywifi($exec);
+    $exec = "$bin_ssh_keygen -t rsa -f id_rsa -C @BlackBulb";
+    exec_blackbulb($exec);
     
     header('Location: ../index.php?tab=2');
     exit;
@@ -123,10 +123,10 @@ if ($ssh_cert == "gen_certificate") {
 if ($install == "install_sshuttle") {
 
     $exec = "$bin_chmod 755 install.sh";
-    exec_fruitywifi($exec);
+    exec_blackbulb($exec);
 
     $exec = "$bin_sudo ./install.sh > $log_path/install.txt &";
-    exec_fruitywifi($exec);
+    exec_blackbulb($exec);
 
     header('Location: ../../install.php?module='.$mod_name);
     exit;
